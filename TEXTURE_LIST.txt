@@ -1,0 +1,118 @@
+═══════════════════════════════════════════════════════════════════
+   MINECRAFT BLOCK TEXTURES - REQUIRED FILES
+═══════════════════════════════════════════════════════════════════
+
+Speichere alle Texturen im Ordner: textures/
+Format: PNG (1024x1024 Pixel)
+Qualität: Hochauflösend
+
+═══════════════════════════════════════════════════════════════════
+BENÖTIGTE DATEIEN:
+═══════════════════════════════════════════════════════════════════
+
+1. GRASBLOCK (Grass Block)
+   ✓ grass_block_top.png       - Obenseite (grüne Grasfläche)
+   ✓ grass_block_side.png      - Seitenflächen (Gras oben, Erde unten)
+   ✓ grass_block_bottom.png    - Unterseite (Erde)
+
+2. ERDE (Dirt)
+   ✓ dirt.png                  - Alle Seiten (braune Erde)
+
+3. STEIN (Stone)
+   ✓ stone.png                 - Alle Seiten (grauer Stein)
+
+4. HOLZSTAMM (Oak Log)
+   ✓ oak_log_top.png           - Ober- und Unterseite (Jahresringe)
+   ✓ oak_log_side.png          - Seitenflächen (Baumrinde)
+
+5. HOLZBRETTER (Oak Planks)
+   ✓ oak_planks.png            - Alle Seiten (Holzbretter)
+
+6. WERKBANK (Crafting Table)
+   ✓ crafting_table_top.png    - Obenseite (Werkbank-Muster)
+   ✓ crafting_table_side.png   - Seitenflächen (Werkzeug-Muster)
+
+7. BLÄTTER (Oak Leaves)
+   ✓ oak_leaves.png            - Alle Seiten (grüne Blätter)
+
+8. PFLASTERSTEIN (Cobblestone)
+   ✓ cobblestone.png           - Alle Seiten (Pflasterstein-Muster)
+
+═══════════════════════════════════════════════════════════════════
+ZUSAMMENFASSUNG:
+═══════════════════════════════════════════════════════════════════
+
+INSGESAMT: 13 Texturdateien benötigt
+
+MEHRFACH-TEXTUREN (verschiedene Seiten):
+  • Grasblock: 3 Dateien (top, side, bottom)
+  • Holzstamm: 2 Dateien (top, side)
+  • Werkbank: 2 Dateien (top, side)
+
+EINZEL-TEXTUREN (alle Seiten gleich):
+  • Erde: 1 Datei
+  • Stein: 1 Datei
+  • Holzbretter: 1 Datei
+  • Blätter: 1 Datei
+  • Pflasterstein: 1 Datei
+
+═══════════════════════════════════════════════════════════════════
+TECHNISCHE DETAILS:
+═══════════════════════════════════════════════════════════════════
+
+• Auflösung: 1024 x 1024 Pixel (hochauflösend)
+• Format: PNG mit Alpha-Kanal (Transparenz möglich für Blätter)
+• Speicherort: textures/ Ordner im Projektverzeichnis
+• Filterung: Automatische Linear-Filterung für beste Qualität
+• Fallback: Bei fehlenden Texturen werden Farben verwendet
+
+BEISPIEL DATEISTRUKTUR:
+minecraft/
+  ├── textures/
+  │   ├── grass_block_top.png
+  │   ├── grass_block_side.png
+  │   ├── grass_block_bottom.png
+  │   ├── dirt.png
+  │   ├── stone.png
+  │   ├── oak_log_top.png
+  │   ├── oak_log_side.png
+  │   ├── oak_planks.png
+  │   ├── crafting_table_top.png
+  │   ├── crafting_table_side.png
+  │   ├── oak_leaves.png
+  │   └── cobblestone.png
+  └── ...
+
+═══════════════════════════════════════════════════════════════════
+TIPPS:
+═══════════════════════════════════════════════════════════════════
+
+1. Für GRASBLOCK: Die side-Textur sollte oben grün (Gras) 
+   und unten braun (Erde) sein
+
+2. Für HOLZSTAMM: top zeigt Jahresringe, side zeigt Rinde
+
+3. Für BLÄTTER: Du kannst Alpha-Transparenz verwenden für 
+   realistische Blätter-Lücken
+
+4. WERKBANK: Die top-Textur zeigt das typische Minecraft 
+   Crafting-Raster, side zeigt Werkzeuge
+
+5. QUALITÄT: Da die Texturen 1024x1024 sind, kannst du 
+   viele Details einbauen!
+
+═══════════════════════════════════════════════════════════════════
+STATUS:
+═══════════════════════════════════════════════════════════════════
+
+Das System ist bereit und wartet auf deine Texturen!
+
+• Texture-Loading implementiert ✓
+• Hochqualitäts-Filterung aktiviert ✓
+• Fallback-Farben vorhanden ✓
+• Ambient Occlusion bleibt erhalten ✓
+
+Sobald du die Dateien in textures/ ablegst, werden sie 
+automatisch beim nächsten Start geladen!
+
+═══════════════════════════════════════════════════════════════════

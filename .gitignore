@@ -1,0 +1,10 @@
+/.venv
+/crafting.py
+/main.py
+/npc.py
+/player.py
+/README.dm
+/requirements.txt
+/ui.py
+/world.py
+/__pycache__
