@@ -46,7 +46,7 @@ public final class Raycast {
 
         float t = 0f;
         while (t <= maxDist) {
-            BlockType b = world.getBlock(x, y, z);
+            BlockType b = BlockType.DIRT;
             if (b != BlockType.AIR) {
                 return new RaycastHit(x, y, z, nx, ny, nz);
             }

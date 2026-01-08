@@ -12,59 +12,20 @@ public final class ChunkRenderer implements AutoCloseable {
     private final BlockTextures textures;
 
     private final Map<Long, ChunkMesh> meshes = new HashMap<>();
-    private final Map<Long, ChunkMesh> waterMeshes = new HashMap<>();
-    private final Set<Long> dirty = new HashSet<>();
-
-    private int viewDistanceChunks = 6;
 
     public ChunkRenderer(World world, BlockTextures textures) {
         this.world = world;
         this.textures = textures;
     }
 
-    public void setViewDistanceChunks(int v) {
-        this.viewDistanceChunks = Math.max(1, v);
-    }
-
-    public void markDirtyChunk(int cx, int cz) {
-        dirty.add(key(cx, cz));
-    }
-
-    public void update(float camX, float camZ) {
-        int ccx = (int) Math.floor(camX / Chunk.SIZE);
-        int ccz = (int) Math.floor(camZ / Chunk.SIZE);
-
-        // Ensure chunks exist + meshes built around player.
-        for (int dz = -viewDistanceChunks; dz <= viewDistanceChunks; dz++) {
-            for (int dx = -viewDistanceChunks; dx <= viewDistanceChunks; dx++) {
-                int cx = ccx + dx;
-                int cz = ccz + dz;
-                long k = key(cx, cz);
-
-                world.getOrCreateChunk(cx, cz);
-
-                if (!meshes.containsKey(k) || dirty.remove(k)) {
-                    rebuild(cx, cz);
-                }
-            }
-        }
-
-        // Optional: could unload far meshes later.
-    }
-
-    private void rebuild(int cx, int cz) {
+    public void buildChunk(int cx, int cz) {
         long k = key(cx, cz);
         ChunkMesh old = meshes.remove(k);
         if (old != null) {
             try { old.close(); } catch (Exception ignored) {}
         }
-        ChunkMesh oldWater = waterMeshes.remove(k);
-        if (oldWater != null) {
-            try { oldWater.close(); } catch (Exception ignored) {}
-        }
-        ChunkMesh[] splitMeshes = ChunkMesher.buildMeshSplitWater(world, cx, cz, textures);
-        meshes.put(k, splitMeshes[0]);
-        waterMeshes.put(k, splitMeshes[1]);
+        ChunkMesh mesh = ChunkMesher.buildMesh(world, cx, cz, textures);
+        meshes.put(k, mesh);
     }
 
     public void drawAll(ShaderProgram shader) {
@@ -74,11 +35,6 @@ public final class ChunkRenderer implements AutoCloseable {
         }
     }
 
-    public void drawAllWater(ShaderProgram shader) {
-        for (ChunkMesh m : waterMeshes.values()) {
-            if (m != null) m.draw();
-        }
-    }
 
     public void drawNear(ShaderProgram shader, float centerX, float centerZ, float radius) {
         float r = Math.max(0.0f, radius);
@@ -111,6 +67,6 @@ public final class ChunkRenderer implements AutoCloseable {
             try { m.close(); } catch (Exception ignored) {}
         }
         meshes.clear();
-        dirty.clear();
+        // ...existing code...
     }
 }

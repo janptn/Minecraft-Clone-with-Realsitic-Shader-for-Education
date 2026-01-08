@@ -1,60 +1,7 @@
+
 package minecraftlike.voxel;
 
 public final class ChunkMesher {
-        // Returns [regularMesh, waterMesh]
-        public static ChunkMesh[] buildMeshSplitWater(World world, int cx, int cz, BlockTextures textures) {
-                int debugBlockCount = 0;
-                BlockType debugFirstType = null;
-            int baseX = cx * Chunk.SIZE;
-            int baseZ = cz * Chunk.SIZE;
-
-            int[] topSolidY = new int[Chunk.SIZE * Chunk.SIZE];
-            for (int lz = 0; lz < Chunk.SIZE; lz++) {
-                for (int lx = 0; lx < Chunk.SIZE; lx++) {
-                    int wx = baseX + lx;
-                    int wz = baseZ + lz;
-                    int top = -1;
-                    for (int y = Chunk.HEIGHT - 1; y >= 0; y--) {
-                        if (world.getBlock(wx, y, wz) != BlockType.AIR) {
-                            top = y;
-                            break;
-                        }
-                    }
-                    topSolidY[lz * Chunk.SIZE + lx] = top;
-                }
-            }
-
-            FloatList regularVerts = new FloatList(Chunk.SIZE * Chunk.SIZE * 6 * 6 * 10);
-            FloatList waterVerts = new FloatList(Chunk.SIZE * Chunk.SIZE * 6 * 6 * 10);
-
-        for (int lx = 0; lx < Chunk.SIZE; lx++) {
-            for (int lz = 0; lz < Chunk.SIZE; lz++) {
-                int wx = baseX + lx;
-                int wz = baseZ + lz;
-                for (int y = 0; y < Chunk.HEIGHT; y++) {
-                    BlockType t = world.getBlock(wx, y, wz);
-                    if (t == BlockType.AIR) continue;
-                    debugBlockCount++;
-                    if (debugFirstType == null) debugFirstType = t;
-                    // Echte Face-Generierung wie in buildMesh
-                    for (int face = 0; face < 6; face++) {
-                        float sky = (face == 3) ? 0.0f : 1.0f;
-                        addFace(regularVerts, textures.uv(t, face), wx, y, wz, face, sky);
-                    }
-                }
-            }
-        }
-        float[] arr1 = regularVerts.toArray();
-        float[] arr2 = waterVerts.toArray();
-            System.out.println("ChunkMesher: cx=" + cx + " cz=" + cz + " blocks=" + debugBlockCount + " firstType=" + debugFirstType);
-        int vertexCount1 = arr1.length / 10;
-        int vertexCount2 = arr2.length / 10;
-        return new ChunkMesh[] {
-            new ChunkMesh(arr1, vertexCount1),
-            new ChunkMesh(arr2, vertexCount2)
-        };
-    }
-
     // Face convention: 0=+X, 1=-X, 2=+Y, 3=-Y, 4=+Z, 5=-Z
     // Vertex format: pos(3), uv(2), normal(3), sky(1), emissive(1)
 
@@ -71,7 +18,7 @@ public final class ChunkMesher {
                 int wz = baseZ + lz;
                 int top = -1;
                 for (int y = Chunk.HEIGHT - 1; y >= 0; y--) {
-                    if (world.getBlock(wx, y, wz) != BlockType.AIR) {
+                    // ...existing code...
                         top = y;
                         break;
                     }
@@ -80,92 +27,29 @@ public final class ChunkMesher {
             }
         }
 
-        // Debug: Zähle Blöcke und Faces
-        int blockCount = 0;
-        int faceCount = 0;
         FloatList verts = new FloatList(Chunk.SIZE * Chunk.SIZE * 6 * 6 * 10);
-
         for (int lx = 0; lx < Chunk.SIZE; lx++) {
             for (int lz = 0; lz < Chunk.SIZE; lz++) {
                 int wx = baseX + lx;
                 int wz = baseZ + lz;
                 for (int y = 0; y < Chunk.HEIGHT; y++) {
-                    BlockType t = world.getBlock(wx, y, wz);
+                    BlockType t = BlockType.DIRT;
                     if (t == BlockType.AIR) continue;
-                    blockCount++;
-                    // Debug: Zeige Blockdaten an Chunk-Grenzen
-                    boolean boundary = (lx == 0 || lx == Chunk.SIZE-1 || lz == 0 || lz == Chunk.SIZE-1 || y == 0 || y == Chunk.HEIGHT-1);
-                    if (boundary && blockCount <= 20) {
-                        BlockType[] neighbors = new BlockType[6];
-                        neighbors[0] = world.getBlock(wx+1, y, wz); // +X
-                        neighbors[1] = world.getBlock(wx-1, y, wz); // -X
-                        neighbors[2] = world.getBlock(wx, y+1, wz); // +Y
-                        neighbors[3] = world.getBlock(wx, y-1, wz); // -Y
-                        neighbors[4] = world.getBlock(wx, y, wz+1); // +Z
-                        neighbors[5] = world.getBlock(wx, y, wz-1); // -Z
-                        System.out.println("Boundary Block: cx=" + cx + " cz=" + cz + " wx=" + wx + " y=" + y + " wz=" + wz + " type=" + t +
-                            " neighbors=[+X:" + neighbors[0] + ", -X:" + neighbors[1] + ", +Y:" + neighbors[2] + ", -Y:" + neighbors[3] + ", +Z:" + neighbors[4] + ", -Z:" + neighbors[5] + "]");
-                    }
-                    // Debug: Zeige die ersten 5 Blockdaten jedes Chunks inkl. Nachbarn
-                    if (blockCount <= 5) {
-                        BlockType[] neighbors = new BlockType[6];
-                        neighbors[0] = world.getBlock(wx+1, y, wz); // +X
-                        neighbors[1] = world.getBlock(wx-1, y, wz); // -X
-                        neighbors[2] = world.getBlock(wx, y+1, wz); // +Y
-                        neighbors[3] = world.getBlock(wx, y-1, wz); // -Y
-                        neighbors[4] = world.getBlock(wx, y, wz+1); // +Z
-                        neighbors[5] = world.getBlock(wx, y, wz-1); // -Z
-                        System.out.println("ChunkMesher Debug: cx=" + cx + " cz=" + cz + " wx=" + wx + " y=" + y + " wz=" + wz + " type=" + t +
-                            " neighbors=[+X:" + neighbors[0] + ", -X:" + neighbors[1] + ", +Y:" + neighbors[2] + ", -Y:" + neighbors[3] + ", +Z:" + neighbors[4] + ", -Z:" + neighbors[5] + "]");
-                    }
-
-                    // Custom non-cube blocks.
-                    if (t == BlockType.TORCH) {
-                        float sky = skyFactor(world, topSolidY, baseX, baseZ, wx, y + 1, wz);
-                        addTorch(verts, textures, wx, y, wz, sky);
-                        continue;
-                    }
-                    if (t == BlockType.TALL_GRASS) {
-                        float sky = skyFactor(world, topSolidY, baseX, baseZ, wx, y + 1, wz);
-                        addCross(verts, textures.tallGrassUv(), wx, y, wz, sky, -1.0f);
-                        continue;
-                    }
-
-                    if (t == BlockType.OAK_STAIRS) {
-                        float sky = skyFactor(world, topSolidY, baseX, baseZ, wx, y + 1, wz);
-                        addOakStairs(verts, textures, wx, y, wz, sky);
-                        continue;
-                    }
-                    // Wasser wird wie ein normaler Block behandelt (Faces per Nachbar-Check, UV kommt aus BlockTextures)
-
-                    // TEST: Generiere ALLE Faces für jeden Block, ignoriert Nachbarn
                     for (int face = 0; face < 6; face++) {
                         float sky = (face == 3) ? 0.0f : skyFactor(world, topSolidY, baseX, baseZ, wx, y, wz);
                         addFace(verts, textures.uv(t, face), wx, y, wz, face, sky);
-                        faceCount++;
                     }
                 }
             }
         }
-        System.out.println("ChunkMesher: cx=" + cx + " cz=" + cz + " blocks=" + blockCount + " faces=" + faceCount);
-
         float[] arr = verts.toArray();
         int vertexCount = arr.length / 10;
-        // Debug: Zeige die ersten 10 generierten Vertices (Position und UV)
-        for (int i = 0; i < Math.min(vertexCount, 10); i++) {
-            float x = arr[i * 10 + 0];
-            float y = arr[i * 10 + 1];
-            float z = arr[i * 10 + 2];
-            float u = arr[i * 10 + 3];
-            float v = arr[i * 10 + 4];
-            System.out.println("Mesh Vertex " + i + ": pos=(" + x + ", " + y + ", " + z + ") uv=(" + u + ", " + v + ")");
-        }
         return new ChunkMesh(arr, vertexCount);
      }
 
     private static boolean occludes(BlockType t) {
         // Partial blocks should not fully occlude neighbor faces.
-        return t != BlockType.AIR && t != BlockType.TALL_GRASS && t != BlockType.TORCH && t != BlockType.OAK_STAIRS;
+        return t != BlockType.AIR && t != BlockType.TALL_GRASS && t != BlockType.TORCH;
     }
 
     private static void addFace(FloatList out, UvRect uv, int wx, int y, int wz, int face, float sky) {
@@ -633,7 +517,7 @@ public final class ChunkMesher {
 
         // Outside chunk: scan from top down until we either find a solid above wy or confirm clear.
         for (int y = Chunk.HEIGHT - 1; y > wy; y--) {
-            if (world.getBlock(wx, y, wz) != BlockType.AIR) return 0.0f;
+            // ...existing code...
         }
         return 1.0f;
     }

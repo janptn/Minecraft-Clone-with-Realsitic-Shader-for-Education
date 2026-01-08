@@ -52,8 +52,7 @@ public final class WorldGen {
                 // Trees are generated in a second pass (world-space, cross-chunk safe).
             }
         }
-        // Place tall grass after terrain generation
-        scatterTallGrass(chunk, heightMap, baseX, baseZ);
+        // ...existing code...
     }
 
     // Now at class level, using heightMap

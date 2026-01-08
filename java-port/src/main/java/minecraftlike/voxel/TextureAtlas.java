@@ -54,19 +54,8 @@ public final class TextureAtlas {
         tiles.put("log_side", "oak_log_side.jpg");
         tiles.put("cobblestone", "cobblestone.png");
         tiles.put("leaves", "oak_leaves.png");
-        tiles.put("craft_top", "crafting_table_top.jpg");
-        tiles.put("craft_side", "crafting_table_side.jpg");
-        tiles.put("iron_ore", "iron_ore.png");
-        tiles.put("coal_ore", "coal_ore.png");
-        tiles.put("furnace", "furnace.png");
-        // Torch: use side/top/bottom like Minecraft block textures.
-        tiles.put("torch_side", "torch_side.png");
-        tiles.put("torch_top", "torch_top.png");
-        tiles.put("torch_bottom", "torch_bottom.png");
-        // Optional legacy single-tile torch (kept for compatibility/debug).
         tiles.put("torch", "torch.png");
         tiles.put("tall_grass", "tall_grass.png");
-        tiles.put("water_waves", "water_waves.png");
 
         if (tiles.size() > grid * grid) {
             throw new IllegalStateException("Too many tiles for atlas grid");
